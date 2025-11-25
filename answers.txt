@@ -1,64 +1,86 @@
 EECS 348 — Lab 13 Answers
--------------------------
+Student: Caleb Morse
+Fall 2025
 
+------------------------------------------------------------
 1. Is there a fault in the program?
-Yes. The fault is the loop starting at index 1 instead of index 0:
+------------------------------------------------------------
+Yes. The fault is here:
+
     for (int i = 1; i < attendance_records.size(); ++i)
-This causes the program to completely ignore the first attendance entry.
 
-------------------------------------------------------
+The loop incorrectly begins at index 1 instead of index 0.
+As a result, the first attendance record is ignored. This is
+the intended fault described in the lab.
 
-2. Define a test case that does NOT execute the fault.
-Impossible. The array is always length 10, so the loop always executes at least once.
-Therefore the faulty line is always executed.
+------------------------------------------------------------
+2. Test case that does NOT execute the fault.
+------------------------------------------------------------
+Impossible.
 
-Sample input shown in code:
+The attendance record always contains 10 items. Therefore,
+the loop:
+
+    for (int i = 1; i < size; ++i)
+
+will always execute at least once. There is no valid size-10
+input that avoids executing this faulty line.
+
+Sample demonstration:
+Input: [1 1 1 1 1 1 1 1 1 1]
+Expected output: 0
+Actual output: 0
+
+------------------------------------------------------------
+3. Test case that executes the fault but does NOT cause an error state.
+------------------------------------------------------------
+The skipped index (0) must not matter. Set index 0 = 1.
+
+Input:
 [1 1 1 1 1 1 1 1 1 1]
-Expected output: false
-Actual output: false
 
-------------------------------------------------------
+Correct absent count: 0
+Buggy absent count:   0
 
-3. Test case that executes the fault but does NOT create an error state.
-Condition: first element must NOT matter (attendance_records[0] = 1).
-
-Test case:
-[1 1 1 1 1 1 1 1 1 1]
-Expected: false
-Actual: false
+Expected output: 0
+Actual output:   0
 
 Fault executed: YES
-Error state: NO (absent count is correct)
+Error state: NO
 Failure: NO
 
-------------------------------------------------------
-
+------------------------------------------------------------
 4. Test case that results in an error state but NOT a failure.
-Condition: first element wrongfully skipped, but result still < 3 absences.
+------------------------------------------------------------
+Index 0 must be absent (0), but the correct total absences
+must still be < 3.
 
-Test case:
+Input:
 [0 1 1 1 1 1 1 1 1 1]
+
 Correct absent count: 1
-Actual absent count: 0
-Expected output: false
-Actual output: false
+Buggy absent count:   0
+
+Expected output: 0
+Actual output:   0
 
 Fault executed: YES
-Error state: YES (incorrect internal absent_count)
+Error state: YES
 Failure: NO
 
-------------------------------------------------------
-
+------------------------------------------------------------
 5. Test case that results in a failure.
-Condition: skipping first zero changes pass/fail result.
+------------------------------------------------------------
+Skipping the first element must change the outcome of the function.
 
-Test case:
+Input:
 [0 0 0 1 1 1 1 1 1 1]
-Correct absent count: 3 → should fail
-Actual absent count: 2 → incorrectly passes
 
-Expected: true
-Actual: false
+Correct absent count: 3 → should fail (1)
+Buggy absent count:   2 → incorrectly passes (0)
+
+Expected output: 1
+Actual output:   0
 
 Fault executed: YES
 Error state: YES
